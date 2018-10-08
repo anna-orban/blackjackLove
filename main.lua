@@ -20,6 +20,8 @@ function love.load()
     takeCard(dealerHand)
 
     print('Total number of cards in deck: '..#deck)
+
+    roundOver = false
 end
 
 function love.draw()
@@ -59,7 +61,9 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'h' then
+    if key == 'h' and not roundOver then
         takeCard(playerHand)
+    elseif key == 's' then
+        roundOver = true
     end
 end
