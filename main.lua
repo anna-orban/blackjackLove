@@ -7,7 +7,7 @@ function love.load()
         end
     end
 
-    local function takeCard(hand)
+    function takeCard(hand)
         table.insert(hand, table.remove(deck, love.math.random(#deck)))
     end
 
@@ -35,4 +35,10 @@ function love.draw()
     end
 
     love.graphics.print(table.concat(output, '\n'), 15, 15)
+end
+
+function love.keypressed(key)
+    if key == 'h' then
+        takeCard(playerHand)
+    end
 end
