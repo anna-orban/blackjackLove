@@ -54,9 +54,17 @@ function love.draw()
     table.insert(output, '')
     table.insert(output, 'Dealer hand: ')
     for cardIndex, card in ipairs(dealerHand) do
-        table.insert(output, 'suit: '..card.suit..', rank: '..card.rank)
+        if not roundOver and cardIndex == 1 then
+            table.insert(output, '(Card hidden)')
+        else  
+            table.insert(output, 'suit: '..card.suit..', rank: '..card.rank)
+        end
     end
-    table.insert(output, 'Total: '..getTotal(dealerHand))    
+    if roundOver then
+        table.insert(output, 'Total: '..getTotal(dealerHand))   
+    else
+        table.insert(output, 'Total: ?') 
+    end
 
     if roundOver then
         table.insert(output, '')
@@ -86,6 +94,11 @@ function love.keypressed(key)
             end
         elseif key == 's' then
             roundOver = true
+        end
+        if roundOver then
+            while getTotal(dealerHand) < 17 do
+                takeCard(dealerHand)
+            end
         end
     else 
         love.load()
