@@ -22,9 +22,7 @@ function love.load()
     print('Total number of cards in deck: '..#deck)
 
     roundOver = false
-end
 
-function love.draw()
     function getTotal(hand)
         local total = 0
         local hasAce = false
@@ -43,6 +41,9 @@ function love.draw()
         end
         return total
     end
+end
+
+function love.draw()
 
     local output = {}
     table.insert(output, 'Player hand: ')
@@ -77,9 +78,16 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == 'h' and not roundOver then
-        takeCard(playerHand)
-    elseif key == 's' then
-        roundOver = true
+    if not roundOver then
+        if key == 'h' then
+            takeCard(playerHand)
+            if getTotal(playerHand) >= 21 then
+                roundOver = true
+            end
+        elseif key == 's' then
+            roundOver = true
+        end
+    else 
+        love.load()
     end
 end
