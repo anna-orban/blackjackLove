@@ -96,15 +96,52 @@ function love.draw()
         end
     end
 
---    love.graphics.print(table.concat(output, '\n'), 15, 15)
-    for cardIndex, card in ipairs(playerHand) do
+    local function drawCard(card, x, y)
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(images.card, (cardIndex - 1) * 60)
+        love.graphics.draw(images.card, x, y)
+
+        local cardWidth = 53
+        local cardHeight = 73
+        local suitImage = images['mini_'..card.suit]
+
+        local function drawCorner(image, xOffset, yOffset)
+            love.graphics.draw(image, x + xOffset, y + yOffset)
+            love.graphics.draw(image, x + cardWidth - xOffset, y + cardHeight - yOffset, 0, -1)
+        end
 
         love.graphics.setColor(0, 0, 0)
-        love.graphics.print(card.suit, (cardIndex - 1) * 60, 0)
-        love.graphics.print(card.rank, (cardIndex - 1) * 60, 15)
+        drawCorner(images[card.rank], 3, 4)
+        drawCorner(suitImage, 3, 14)
     end
+    local testHand1 = {
+        {suit = 'club', rank = 1},
+        {suit = 'diamond', rank = 2},
+        {suit = 'heart', rank = 3},
+        {suit = 'spade', rank = 4},
+        {suit = 'club', rank = 5},
+        {suit = 'diamond', rank = 6},
+        {suit = 'heart', rank = 7},
+    }
+    
+    for cardIndex, card in ipairs(testHand1) do
+        drawCard(card, (cardIndex - 1) * 60, 0)
+    end
+
+    local testHand2 = {
+        {suit = 'spade', rank = 8},
+        {suit = 'club', rank = 9},
+        {suit = 'diamond', rank = 10},
+        {suit = 'heart', rank = 11},
+        {suit = 'spade', rank = 12},
+        {suit = 'club', rank = 13},
+    }
+    
+    for cardIndex, card in ipairs(testHand2) do
+        drawCard(card, (cardIndex - 1) * 60, 80)
+    end
+    --for cardIndex, card in ipairs(playerHand) do
+      --drawCard(card, (cardIndex - 1) * 60, 0)  
+        
 end
 
 function love.keypressed(key)
