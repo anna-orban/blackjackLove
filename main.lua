@@ -41,6 +41,20 @@ function love.load()
         end
         return total
     end
+
+    images = {}
+    for nameIndex, name in ipairs({
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+        'pip_heart', 'pip_diamond', 'pip_club', 'pip_spade',
+        'mini_heart', 'mini_diamond', 'mini_club', 'mini_spade',
+        'card', 'card_face_down',
+        'face_jack', 'face_queen', 'face_king',
+     }) do
+        images[name] = love.graphics.newImage('images/'..name..'.png')
+    end
+
+    love.graphics.setBackgroundColor(1, 1, 1)
+
 end
 
 function love.draw()
@@ -82,7 +96,15 @@ function love.draw()
         end
     end
 
-    love.graphics.print(table.concat(output, '\n'), 15, 15)
+--    love.graphics.print(table.concat(output, '\n'), 15, 15)
+    for cardIndex, card in ipairs(playerHand) do
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(images.card, (cardIndex - 1) * 60)
+
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.print(card.suit, (cardIndex - 1) * 60, 0)
+        love.graphics.print(card.rank, (cardIndex - 1) * 60, 15)
+    end
 end
 
 function love.keypressed(key)
