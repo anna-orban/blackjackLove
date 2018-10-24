@@ -122,9 +122,9 @@ function love.draw()
             local faceImage
             if card.rank == 11 then
                 faceImage = images.face_jack
-            else if card.rank == 12 then
+            elseif card.rank == 12 then
                 faceImage = images.face_queen
-            else if card.rank == 13 then
+            elseif card.rank == 13 then
                 faceImage = images.face_king
             end
             love.graphics.setColor(1, 1, 1)
