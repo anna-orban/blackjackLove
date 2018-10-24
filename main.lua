@@ -106,13 +106,32 @@ function love.draw()
 
         local function drawCorner(image, xOffset, yOffset)
             love.graphics.draw(image, x + xOffset, y + yOffset)
-            love.graphics.draw(image, x + cardWidth - xOffset, y + cardHeight - yOffset, 0, -1)
+            love.graphics.draw(image, x + cardWidth - xOffset, y + cardHeight - yOffset, 0, -1, -1)
         end
 
-        love.graphics.setColor(0, 0, 0)
+        if card.suit == 'heart' or card.suit == 'diamond' then
+            love.graphics.setColor(.89, .06, .39)
+        else 
+            love.graphics.setColor(.2, .2, .2)
+        end
+
         drawCorner(images[card.rank], 3, 4)
         drawCorner(suitImage, 3, 14)
+
+        if card.rank > 10 then
+            local faceImage
+            if card.rank == 11 then
+                faceImage = images.face_jack
+            else if card.rank == 12 then
+                faceImage = images.face_queen
+            else if card.rank == 13 then
+                faceImage = images.face_king
+            end
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.draw(faceImage, x + 12, y + 11)
+        end
     end
+
     local testHand1 = {
         {suit = 'club', rank = 1},
         {suit = 'diamond', rank = 2},
@@ -140,8 +159,8 @@ function love.draw()
         drawCard(card, (cardIndex - 1) * 60, 80)
     end
     --for cardIndex, card in ipairs(playerHand) do
-      --drawCard(card, (cardIndex - 1) * 60, 0)  
-        
+      --drawCard(card, (cardIndex - 1) * 60, 0) 
+            
 end
 
 function love.keypressed(key)
