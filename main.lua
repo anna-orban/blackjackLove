@@ -139,10 +139,10 @@ function love.draw()
                     love.graphics.draw(pipImage, x + cardWidth - offsetX - pipWidth, y + offsetY)
                 end
                 if mirrorY then
-                    love.graphics.draw(pipImage, x + offsetX, cardHeight - offsetY + pipWidth, 0, -1, -1)
+                    love.graphics.draw(pipImage, x + offsetX + pipWidth, y + cardHeight - offsetY, 0, -1, -1)
                 end
                 if mirrorX and mirrorY then
-                    love.graphics(pipImage, x + cardWidth - offsetX, y + cardHeight - offsetY, 0, -1, -1)
+                    love.graphics.draw(pipImage, x + cardWidth - offsetX, y + cardHeight - offsetY, 0, -1, -1)
                 end
             end
 
@@ -157,25 +157,16 @@ function love.draw()
             if card.rank == 1 then
                 drawPip(xMid, yMid, false, false)
             elseif card.rank == 2 then
-                love.graphics.draw(pipImage, x + xMid, y + yTop)
-                love.graphics.draw(pipImage, x + xMid + pipWidth, y + cardHeight - yTop, 0, -1)
-                --drawPip(xMid, yTop, false, true)    
+                drawPip(xMid, yTop, false, true)    
             elseif card.rank == 3 then
-                love.graphics.draw(pipImage, x + xMid, y + yTop)
-                love.graphics.draw(pipImage, x + xMid, y + yMid)
-                love.graphics.draw(pipImage, x + xMid + pipWidth, y + cardHeight - yTop, 0, -1)
-                --drawPip(xMid, yMid, false, false)
-                --drawPip(xMid, yTop, false, false)
-                --drawPip(xMid, yTop, false, true)
+                drawPip(xMid, yMid, false, false)
+                drawPip(xMid, yTop, false, false)
+                drawPip(xMid, yTop, false, true)
             elseif card.rank == 4 then
-                love.graphics.draw(pipImage, x + xLeft, y + yTop)
---                drawPip(xLeft, yTop, false, false)
-                --drawPip(xLeft, yTop, true, false)
-                love.graphics.draw(pipImage, x + cardWidth - xLeft - pipWidth, y + yTop)
-               -- drawPip(xLeft, yTop, false, true)
-                love.graphics.draw(pipImage, x + xLeft + pipWidth, y + cardHeight - yTop, 0, -1, -1)
-                --drawPip(xLeft, yTop, true, true)
-                love.graphics.draw(pipImage, x + cardWidth - xLeft, y + cardHeight - yTop, 0, -1, -1)
+                drawPip(xLeft, yTop, false, false)
+                drawPip(xLeft, yTop, true, false)
+                drawPip(xLeft, yTop, false, true)
+                drawPip(xLeft, yTop, true, true)
             end
         end
     end
