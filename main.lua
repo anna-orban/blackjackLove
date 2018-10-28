@@ -2,7 +2,6 @@ function love.load()
     deck = {}
     for suitIndex, suit in ipairs({'club', 'heart', 'spade', 'diamond'}) do
         for rank = 1, 13 do
-            print('suit: '..suit..', rank: '..rank)
             table.insert(deck, {suit = suit, rank = rank})
         end
     end
@@ -19,7 +18,6 @@ function love.load()
     takeCard(dealerHand)
     takeCard(dealerHand)
 
-    print('Total number of cards in deck: '..#deck)
 
     roundOver = false
 
@@ -150,6 +148,8 @@ function love.draw()
             local xMid = 21
             local yTop = 7
             local yMid = 31
+            local yThird = 19
+            local yQuarter = 23
             local pipImage = images['pip_'..card.suit]
             local pipWidth = 11
 
@@ -163,19 +163,54 @@ function love.draw()
                 drawPip(xMid, yTop, false, true)
             elseif card.rank == 4 then
                 drawPip(xLeft, yTop, true, true)
+            elseif card.rank == 5 then
+                drawPip(xMid, yMid, false, false)
+                drawPip(xLeft, yTop, true, true)
+            elseif card.rank == 6 then
+                drawPip(xLeft, yTop, true, true)
+                drawPip(xLeft, yMid, true, false)
+            elseif card.rank == 7 then
+                drawPip(xLeft, yTop, true, true)
+                drawPip(xLeft, yMid, true, false)
+                drawPip(xMid, yThird, false, false)
+            elseif card.rank == 8 then
+                drawPip(xLeft, yTop, true, true)
+                drawPip(xLeft, yMid, true, false)
+                drawPip(xMid, yThird, false, true)
+            elseif card.rank == 9 then
+                drawPip(xLeft, yTop, true, true)
+                drawPip(xLeft, yQuarter, true, true)
+                drawPip(xMid, yMid, false, false)
+            elseif card.rank == 10 then
+                drawPip(xLeft, yTop, true, true)
+                drawPip(xLeft, yQuarter, true, true)
+                drawPip(xMid, 16, false, true)
             end
         end
     end
 
-    local testHand = {
+    local testHand1 = {
         {suit = 'club', rank = 1},
         {suit = 'diamond', rank = 2},
         {suit = 'heart', rank = 3},
         {suit = 'spade', rank = 4},
+        {suit = 'diamond', rank = 5},
     }
-    
-    for cardIndex, card in ipairs(testHand) do
+
+    for cardIndex, card in ipairs(testHand1) do
         drawCard(card, (cardIndex - 1) * 60, 0)
+    end
+
+    local testHand2 = {
+        {suit = 'club', rank = 6},
+        {suit = 'heart', rank = 7},
+        {suit = 'spade', rank = 8},
+        {suit = 'diamond', rank = 9},
+        {suit = 'heart', rank = 10},
+    }
+
+    for cardIndex, card in ipairs(testHand2) do
+        drawCard(card, (cardIndex - 1) * 60, 80)
     end
 
     --for cardIndex, card in ipairs(playerHand) do
