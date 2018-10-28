@@ -160,12 +160,8 @@ function love.draw()
                 drawPip(xMid, yTop, false, true)    
             elseif card.rank == 3 then
                 drawPip(xMid, yMid, false, false)
-                drawPip(xMid, yTop, false, false)
                 drawPip(xMid, yTop, false, true)
             elseif card.rank == 4 then
-                drawPip(xLeft, yTop, false, false)
-                drawPip(xLeft, yTop, true, false)
-                drawPip(xLeft, yTop, false, true)
                 drawPip(xLeft, yTop, true, true)
             end
         end
