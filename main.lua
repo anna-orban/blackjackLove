@@ -53,6 +53,25 @@ function love.load()
 
     love.graphics.setBackgroundColor(1, 1, 1)
 
+    buttonY = 230
+    buttonHeight = 25
+
+    buttonHitX = 10
+    buttonHitWidth = 53
+
+    buttonStandX = 70
+    buttonStandWidth = 53
+
+    buttonPlayAgainX = 10
+    buttonPlayAgainWidth = 113
+
+    function isMouseOnButton(buttonX, buttonWidth)
+        return love.mouse.getX() >= buttonX
+        and love.mouse.getX() < buttonX + buttonWidth
+        and love.mouse.getY() >= buttonY
+        and love.mouse.getY() < buttonY + buttonHeight
+    end
+
 end
 
 function love.draw()
@@ -63,6 +82,17 @@ function love.draw()
 
     function drawWinner(message)
         love.graphics.print(message, marginX, 268)
+    end
+    
+    function drawButton(text, buttonX, buttonWidth, textOffsetX)
+        if isMouseOnButton(buttonX, buttonWidth) then
+            love.graphics.setColor(1, .8, .3)
+        else
+            love.graphics.setColor(1, .5, .2)
+        end
+        love.graphics.rectangle('fill', buttonX, buttonY, buttonWidth, buttonHeight)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print(text, buttonX + textOffsetX, buttonY + 6)
     end
 
     function drawCard(card, x, y)
@@ -187,22 +217,26 @@ function love.draw()
         else
             drawWinner('Draw')
         end
+        drawButton('Play again', buttonPlayAgainX, buttonPlayAgainWidth, 24)
     else
         love.graphics.print('Total: ?', marginX, 10)
+        drawButton('Hit!', buttonHitX, buttonHitWidth, 16)
+        drawButton('Stand', buttonStandX, buttonStandWidth, 8)
     end
-
+    
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print('Total: '..getTotal(playerHand), marginX, 120)
 
 end
 
-function love.keypressed(key)
+function love.mousereleased()
     if not roundOver then
-        if key == 'h' then
+        if isMouseOnButton(buttonHitX, buttonHitWidth) then
             takeCard(playerHand)
             if getTotal(playerHand) >= 21 then
                 roundOver = true
             end
-        elseif key == 's' then
+        elseif isMouseOnButton(buttonStandX, buttonStandWidth) then
             roundOver = true
         end
         if roundOver then
@@ -210,7 +244,7 @@ function love.keypressed(key)
                 takeCard(dealerHand)
             end
         end
-    else 
+    elseif isMouseOnButton(buttonPlayAgainX, buttonPlayAgainWidth) then
         love.load()
-    end
+    end 
 end
