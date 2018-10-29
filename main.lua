@@ -57,44 +57,15 @@ end
 
 function love.draw()
 
-    local output = {}
-    table.insert(output, 'Player hand: ')
-    for cardIndex, card in ipairs(playerHand) do
-        table.insert(output, 'suit: '..card.suit..', rank: '..card.rank)
-    end
-    table.insert(output, 'Total: '..getTotal(playerHand))
-    table.insert(output, '')
-    table.insert(output, 'Dealer hand: ')
-    for cardIndex, card in ipairs(dealerHand) do
-        if not roundOver and cardIndex == 1 then
-            table.insert(output, '(Card hidden)')
-        else  
-            table.insert(output, 'suit: '..card.suit..', rank: '..card.rank)
-        end
-    end
-    if roundOver then
-        table.insert(output, 'Total: '..getTotal(dealerHand))   
-    else
-        table.insert(output, 'Total: ?') 
+    function hasHandWon(thisHand, otherHand)
+        return getTotal(thisHand) <= 21 and (getTotal(otherHand) > 21 or getTotal(thisHand) > getTotal(otherHand))
     end
 
-    if roundOver then
-        table.insert(output, '')
-
-        local function hasHandWon(thisHand, otherHand)
-            return getTotal(thisHand) <= 21 and (getTotal(otherHand) > 21 or getTotal(thisHand) > getTotal(otherHand))
-        end
-
-        if hasHandWon(playerHand, dealerHand) then
-            table.insert(output, 'Player wins!')
-        elseif hasHandWon(dealerHand, playerHand) then
-            table.insert(output, 'Dealer wins!')
-        else
-            table.insert(output, "It's a draw!")
-        end
+    function drawWinner(message)
+        love.graphics.print(message, marginX, 268)
     end
 
-    local function drawCard(card, x, y)
+    function drawCard(card, x, y)
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(images.card, x, y)
 
@@ -125,7 +96,7 @@ function love.draw()
             elseif card.rank == 13 then
                 faceImage = images.face_king
             end
-            --love.graphics.setColor(1, 1, 1)
+            love.graphics.setColor(1, 1, 1)
             love.graphics.draw(faceImage, x + 12, y + 11)
 
         else
@@ -209,12 +180,19 @@ function love.draw()
 
     if roundOver then
         love.graphics.print('Total: '..getTotal(dealerHand), marginX, 10)
+        if hasHandWon(playerHand, dealerHand) then
+            drawWinner('Player wins')
+        elseif hasHandWon(dealerHand, playerHand) then
+            drawWinner('Dealer wins')
+        else
+            drawWinner('Draw')
+        end
     else
         love.graphics.print('Total: ?', marginX, 10)
     end
 
     love.graphics.print('Total: '..getTotal(playerHand), marginX, 120)
-            
+
 end
 
 function love.keypressed(key)
