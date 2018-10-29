@@ -125,7 +125,7 @@ function love.draw()
             elseif card.rank == 13 then
                 faceImage = images.face_king
             end
-            love.graphics.setColor(1, 1, 1)
+            --love.graphics.setColor(1, 1, 1)
             love.graphics.draw(faceImage, x + 12, y + 11)
 
         else
@@ -189,32 +189,31 @@ function love.draw()
         end
     end
 
-    local testHand1 = {
-        {suit = 'club', rank = 1},
-        {suit = 'diamond', rank = 2},
-        {suit = 'heart', rank = 3},
-        {suit = 'spade', rank = 4},
-        {suit = 'diamond', rank = 5},
-    }
+    local cardSpacing = 60
+    local marginX =10
 
-    for cardIndex, card in ipairs(testHand1) do
-        drawCard(card, (cardIndex - 1) * 60, 0)
+    for cardIndex, card in ipairs(dealerHand) do
+        local dealerMarginY = 30
+        if not roundOver and cardIndex == 1 then
+            love.graphics.draw(images.card_face_down, marginX, dealerMarginY)
+        else
+            drawCard(card, ((cardIndex - 1) * cardSpacing) + marginX, dealerMarginY)
+        end
+    end
+    
+    for cardIndex, card in ipairs(playerHand) do
+        drawCard(card, ((cardIndex - 1) * cardSpacing) + marginX, 140)
     end
 
-    local testHand2 = {
-        {suit = 'club', rank = 6},
-        {suit = 'heart', rank = 7},
-        {suit = 'spade', rank = 8},
-        {suit = 'diamond', rank = 9},
-        {suit = 'heart', rank = 10},
-    }
+    love.graphics.setColor(0, 0, 0)
 
-    for cardIndex, card in ipairs(testHand2) do
-        drawCard(card, (cardIndex - 1) * 60, 80)
+    if roundOver then
+        love.graphics.print('Total: '..getTotal(dealerHand), marginX, 10)
+    else
+        love.graphics.print('Total: ?', marginX, 10)
     end
 
-    --for cardIndex, card in ipairs(playerHand) do
-      --drawCard(card, (cardIndex - 1) * 60, 0) 
+    love.graphics.print('Total: '..getTotal(playerHand), marginX, 120)
             
 end
 
