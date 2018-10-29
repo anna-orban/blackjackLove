@@ -1,44 +1,5 @@
 function love.load()
-    deck = {}
-    for suitIndex, suit in ipairs({'club', 'heart', 'spade', 'diamond'}) do
-        for rank = 1, 13 do
-            table.insert(deck, {suit = suit, rank = rank})
-        end
-    end
-
-    function takeCard(hand)
-        table.insert(hand, table.remove(deck, love.math.random(#deck)))
-    end
-
-    playerHand = {}
-    takeCard(playerHand)
-    takeCard(playerHand)
-
-    dealerHand = {}
-    takeCard(dealerHand)
-    takeCard(dealerHand)
-
-
-    roundOver = false
-
-    function getTotal(hand)
-        local total = 0
-        local hasAce = false
-        for cardIndex, card in ipairs(hand) do
-            if card.rank > 10 then
-                total = total + 10
-            else
-                total = total + card.rank
-            end
-            if card.rank == 1 then
-                hasAce = true
-            end
-        end
-        if hasAce and total <= 11 then
-            total = total + 10
-        end
-        return total
-    end
+    love.graphics.setBackgroundColor(1, 1, 1)
 
     images = {}
     for nameIndex, name in ipairs({
@@ -50,8 +11,6 @@ function love.load()
      }) do
         images[name] = love.graphics.newImage('images/'..name..'.png')
     end
-
-    love.graphics.setBackgroundColor(1, 1, 1)
 
     buttonY = 230
     buttonHeight = 25
@@ -72,6 +31,30 @@ function love.load()
         and love.mouse.getY() < buttonY + buttonHeight
     end
 
+    function reset()
+        deck = {}
+        for suitIndex, suit in ipairs({'club', 'heart', 'spade', 'diamond'}) do
+            for rank = 1, 13 do
+                table.insert(deck, {suit = suit, rank = rank})
+            end
+        end
+
+        function takeCard(hand)
+            table.insert(hand, table.remove(deck, love.math.random(#deck)))
+        end
+
+        playerHand = {}
+        takeCard(playerHand)
+        takeCard(playerHand)
+
+        dealerHand = {}
+        takeCard(dealerHand)
+        takeCard(dealerHand)
+
+        roundOver = false
+    end
+
+    reset()
 end
 
 function love.draw()
@@ -223,7 +206,7 @@ function love.draw()
         drawButton('Hit!', buttonHitX, buttonHitWidth, 16)
         drawButton('Stand', buttonStandX, buttonStandWidth, 8)
     end
-    
+
     love.graphics.setColor(0, 0, 0)
     love.graphics.print('Total: '..getTotal(playerHand), marginX, 120)
 
@@ -245,6 +228,25 @@ function love.mousereleased()
             end
         end
     elseif isMouseOnButton(buttonPlayAgainX, buttonPlayAgainWidth) then
-        love.load()
+        reset()
     end 
+end
+
+function getTotal(hand)
+    local total = 0
+    local hasAce = false
+    for cardIndex, card in ipairs(hand) do
+        if card.rank > 10 then
+            total = total + 10
+        else
+            total = total + card.rank
+        end
+        if card.rank == 1 then
+            hasAce = true
+        end
+    end
+    if hasAce and total <= 11 then
+        total = total + 10
+    end
+    return total
 end
